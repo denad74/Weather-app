@@ -1,0 +1,61 @@
+.app{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.header {
+  background-color: aqua;
+  padding: 10px;
+}
+.header h1{
+  color: #666;
+  margin: 10px;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+}
+
+.weather-container{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+}
+
+.card {
+  display: inline-block;
+  padding: 30px;
+  margin: 20px;
+  width: 40%;
+  height: 30%;
+  border: 1px solid #666;
+  border-radius: 4px;
+}
+
+.btn-add{
+  color: #666;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  right: 30px;
+  bottom: 30px;
+  background-color: aqua;
+  border-radius: 50%;
+  font-size: 30px;
+  border: none;
+}
+
+.btn-add:hover{
+  color: #000;
+  background-color: #00caca;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+}
+
+button:disabled:hover {
+  background-color: #cccccc;
+  color: #666666;
+}

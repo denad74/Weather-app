@@ -1,0 +1,31 @@
+
+.card .input-form{
+    margin: 10px 0 20px 0;
+    width: 100%;
+}
+
+.card .input-form .input-form-field{
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #333;
+    appearance: none;
+    background:none;
+    outline: none;
+}
+
+.card .input-form-btn{
+    background-color: #fff;
+    border: none;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    color: #0facac;
+    border-bottom: 1px solid transparent
+}
+
+.card .input-form-btn:hover{
+    color: #333;
+    border-bottom: 1px solid #0facac;
+}
+
