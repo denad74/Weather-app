@@ -42,7 +42,7 @@ function App() {
 
 
   const setQueryOnSearch = (inputQuery) => {
-    console.log(inputQuery);
+    // console.log(inputQuery);
     setQuery(inputQuery)
   }
 
