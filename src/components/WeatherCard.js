@@ -3,20 +3,23 @@ import ReactCountryFlag from "react-country-flag"
 import ReactTooltip from "react-tooltip";
 import './WeatherCard.css'
 
-const WeatherCard = ({location, icon, removeLocation}) => {
-   // console.log(location);
+const WeatherCard = ({ location, icon, removeLocation }) => {
+    // const [weatherLocation, setWeatherLocation] =useState([])
+   
+    //console.log(location);
+    // console.log(location);
 
-    const weather = location ? location.map((loc, index) => (
-       
-            
-        <div className='card' key={index}>
-            <ReactTooltip />
+    const weather = location.map((loc, i) => {
+      
+    
+            return <div className='card' key={i}>
+                <ReactTooltip />
                 <div className='location'>
-                    <div className='city'>{loc.name}</div>
+                    <div className='city'>{loc.location.name}</div>
                     <div className='country'>
                         <ReactCountryFlag
                             className="emojiFlag"
-                            countryCode={loc.sys.country}
+                            countryCode={loc.location.sys.country}
                             style={{
                                 fontSize: '2em',
                                 lineHeight: '2em',
@@ -26,30 +29,34 @@ const WeatherCard = ({location, icon, removeLocation}) => {
                     </div>
                 </div>
                 <div className='weather-info'>
-                    <div className='weather-info-details'>{Math.round(loc.main.temp)} °C</div>
-                    <div className='weather-info-details'></div><img data-tip={loc.weather[0].description} className='weather-icon' src={`${icon}${loc.weather[0].icon}.png`} alt='Weather icon'></img>
-                    <div className='weather-info-details'>{loc.wind.speed}km/h</div>
-                    <div className='arrow' style={{ transform: `rotate(${loc.wind.deg}deg)` }}></div>
+                    <div className='weather-info-details'>{Math.round(loc.location.main.temp)} °C</div>
+                    <div className='weather-info-details'></div><img data-tip={loc.location.weather[0].description} className='weather-icon' src={`${icon}${loc.location.weather[0].icon}.png`} alt='Weather icon'></img>
+                    <div className='weather-info-details'>{loc.location.wind.speed}km/h</div>
+                    <div className='arrow' style={{ transform: `rotate(${loc.location.wind.deg}deg)` }}></div>
                     
                 </div>
                 
-                 {/* <span class="tooltiptext"></span> */}
+                {/* <span class="tooltiptext"></span> */}
             
-            <div>
-                <button
-                    className='input-form-btn'
-                    onClick={()=> removeLocation(loc.id)}
-                >
-                    Remove
-                </button>
+                <div>
+                    <button
+                        className='input-form-btn'
+                        onClick={() => removeLocation(loc.id)}
+                    >
+                        Remove
+                    </button>
+                </div>
             </div>
-        </div>
-        
-    )) : 'loading...';
+              
+      
+});
 
+      
+//console.log(weatherLocation);
     
     return (
         <> 
+        
            {weather}   
     </>
          

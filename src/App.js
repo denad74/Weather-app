@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-
+import axios from 'axios'
 import InputCard from './components/InputCard';
 import WeatherCard from './components/WeatherCard'
-
-
 
 import './App.css';
 
@@ -18,66 +16,88 @@ function App() {
     baseURL: "https://api.openweathermap.org/data/2.5/"
   };
 
-  const [query, setQuery] = useState('');
+  
+  const [error, setError] = useState(null)
 
-  const [location, setLocation] = useState([]);
+   useEffect(() => {
+    const tempLoc = localStorage.getItem("location");
+     const loadedLocation = JSON.parse(tempLoc);
+     //console.log(loadedLocation);
+    if (loadedLocation) {
+      setWeatherLocation(loadedLocation);
+    }
+   }, []);
+
+  const [weatherLocation, setWeatherLocation] = useState([]);
 
   const [showForm, setShowForm] = useState(false)
 
  // const [weather, setWeather] = useState({});
 
-   useEffect(() => {
-    const tempLoc = localStorage.getItem("location");
-    const loadedLocation = JSON.parse(tempLoc);
-    if (loadedLocation) {
-      setLocation(loadedLocation);
-    }
-   }, []);
+
+  // const setQueryOnSearch = (inputQuery) => {
+  //   // console.log(inputQuery);
+  //   setQuery(inputQuery)
+  // }
+
   
-  useEffect(() => {
-    const tempLocation = JSON.stringify(location);
+
+  const getLocationWeather = async (query) => {
+    // if (e.key === "Enter") {
+
+      try {
+        const response = await axios.get(`${apiData.baseURL}weather?q=${query}&units=metric&APPID=${apiData.key}`)
+        console.log(response.data);
+        setWeatherLocation([...weatherLocation, { location: response.data, id: new Date().getTime() }]);
+        // setQuery('')
+        setShowForm(false);
+      } catch (error) {
+        console.log(error.response.status);
+        if (error.response.status === 400) {
+          setError("You did not enter anything. Please enter location!")
+        }
+         if (error.response.status === 404) {
+          setError("You enter wrong location! Please enter location!")
+        }
+  };
+      // fetch(`${apiData.baseURL}weather?q=${query}&units=metric&APPID=${apiData.key}`)
+      //   .then(res => res.json())
+      //   .then(result => {
+      //     //console.log(result);
+      //     setWeatherLocation([...weatherLocation, {location: result, id: new Date().getTime()}]);
+      //     setQuery('')
+      //     setShowForm(false);
+      //   }).catch((err) => {
+      //     console.log(err);
+      //   })
+    // }
+  }
+
+   useEffect(() => {
+    const tempLocation = JSON.stringify(weatherLocation);
     localStorage.setItem("location", tempLocation);
-  }, [location]);
-
-
-
-  const setQueryOnSearch = (inputQuery) => {
-    // console.log(inputQuery);
-    setQuery(inputQuery)
-  }
-
-
-
-  const getLocationWeather = (e) => {
-    if (e.key === "Enter") {
-      fetch(`${apiData.baseURL}weather?q=${query}&units=metric&APPID=${apiData.key}`)
-        .then(res => res.json())
-        .then(result => {
-          //console.log(result);
-          setLocation([...location, result]);
-          setQuery('')
-          setShowForm(false);
-        }).catch((err) => {
-          console.log(err.massage);
-        })
-    }
-  }
-
+   }, [weatherLocation]);
+  
   const removeLocation = (id) => {
     // console.log(location);
     // console.log(id);
-    const updateLocation = location.filter((loc) => loc.id !== id);
+    const updateLocation = weatherLocation.filter((loc) => loc.id !== id);
     console.log(updateLocation);
-    setLocation(updateLocation);
+    setWeatherLocation(updateLocation);
+    setError('')
   };
 
   const removeForm = () => {
     setShowForm(false);
+    setError('')
   }
 
   const addForm = () => {
     setShowForm(true)
   }
+
+ 
+
  // console.log(location);
   return (
     <div className='app'>
@@ -86,16 +106,16 @@ function App() {
       </header>
 
       <div className='weather-container'>
-        <WeatherCard
-          location={location}
+         <WeatherCard
+          location={weatherLocation}
           icon={icon}
           removeLocation={removeLocation}
         />
         {showForm && <InputCard
-          setQuery={setQueryOnSearch}
-          onEnterPress={getLocationWeather}
-          query={query}
+          getLocationWeather={getLocationWeather}
           removeForm={removeForm}
+          setError={setError}
+          error={error}
         />}
         
       </div>

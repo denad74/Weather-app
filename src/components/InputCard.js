@@ -1,19 +1,45 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
+
 import './InputCard.css'
 
 const InputCard = (props) => {
+
+    const [query, setQuery] = useState('');
+    const inputRef = useRef();
+
+
+    const onInputChange = (e) => {
+        const inputQuery = e.target.value;
+        if (inputQuery === '') {
+            props.setError("You did not enter anything. Please enter location!");
+            return
+        }
+
+        setQuery(inputQuery);
+        props.setError('')
+    }
+    
+    const onEnterPress = (e) => {
+        e.preventDefault();
+        props.getLocationWeather(query)
+        setQuery('')
+   }
+    
+    
     return (
         <div className='card'>
-            <div className='input-form'>
+            <form className='input-form' onSubmit={onEnterPress}>
+                
                 <input
+                    ref={inputRef}
                     type='text'
                     placeholder='Enter location'
                     className='input-form-field'
-                    onChange={(e) => props.setQuery(e.target.value)}
-                    value={props.query}
-                    onKeyDown={props.onEnterPress}
+                    onChange={onInputChange}
+                    value={query}    
                 />
-                </div>
+                {props.error && <p className='error-message'>{props.error}</p>}
+                </form>
                 <div>
                 <button
                     className='input-form-btn'

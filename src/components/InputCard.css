@@ -28,4 +28,6 @@
     color: #333;
     border-bottom: 1px solid #0facac;
 }
-
+.error-message {
+  color: #b40e0e;
+}
